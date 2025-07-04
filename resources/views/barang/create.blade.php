@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Tambah Barang & Unit')
 @section('content')
 <div class="container mt-4">
     <h2 class="mb-4 fw-semibold text-primary">

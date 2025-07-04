@@ -1,36 +1,46 @@
-<nav class="position-fixed start-0 top-0 vh-100 bg-white p-3 shadow-sm d-flex flex-column" style="width: 240px; z-index: 1030;">
-    <h4 class="mb-4 fw-bold text-primary">
-        <i class="bi bi-grid me-2"></i>Inventory Admin
-    </h4>
+<nav class="position-fixed top-0 start-0 bg-white border-end shadow-sm d-flex flex-column justify-between" style="width: 240px; height: 100vh; z-index: 1030;">
+    {{-- Header --}}
+    <div class="p-4 border-bottom">
+        <h5 class="fw-bold mb-1 d-flex align-items-center text-primary">
+            <i class="bi bi-layers me-2 fs-4"></i> Inventaris
+        </h5>
+        <small class="text-muted">Admin Panel</small>
+    </div>
 
-    <ul class="nav flex-column flex-grow-1">
-        <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center text-dark" href="{{ route('dashboard') }}">
-                <i class="bi bi-speedometer2 me-2"></i> Dashboard
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center text-dark" href="{{ route('barang.index') }}">
-                <i class="bi bi-box-seam me-2"></i> Data Barang
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center text-dark" href="{{ route('barang-masuk.index') }}">
-                <i class="bi bi-box-arrow-in-down me-2"></i> Barang Masuk
-            </a>
-        </li>
-        <li class="nav-item mb-2">
-            <a class="nav-link d-flex align-items-center text-dark" href="{{ route('barang-keluar.index') }}">
-                <i class="bi bi-box-arrow-in-down me-2"></i> Barang Keluar
-            </a>
-        </li>
-        {{-- Tambahan lainnya bisa di sini --}}
+    {{-- Menu --}}
+    <ul class="nav flex-column p-3 gap-2 flex-grow-1">
+        @php
+            $menus = [
+                ['route' => 'dashboard', 'icon' => 'bi-speedometer2', 'label' => 'Dashboard'],
+                ['route' => 'barang.index', 'icon' => 'bi-box-seam', 'label' => 'Data Barang'],
+                ['route' => 'barang-masuk.index', 'icon' => 'bi-box-arrow-in-down', 'label' => 'Barang Masuk'],
+                ['route' => 'barang-keluar.index', 'icon' => 'bi-box-arrow-up', 'label' => 'Barang Keluar'],
+                ['route' => 'laporan.index', 'icon' => 'bi-file-earmark-text', 'label' => 'Laporan'],
+            ];
+        @endphp
+
+        @foreach ($menus as $menu)
+            <li>
+                <a href="{{ route($menu['route']) }}" class="nav-link d-flex align-items-center rounded px-3 py-2 {{ request()->routeIs($menu['route']) ? 'bg-light text-primary fw-semibold' : 'text-dark' }}">
+                    <i class="bi {{ $menu['icon'] }} me-2 fs-5"></i> {{ $menu['label'] }}
+                </a>
+            </li>
+        @endforeach
     </ul>
 
-    <form method="POST" action="{{ route('logout') }}" class="mt-auto">
-        @csrf
-        <button type="submit" class="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center">
-            <i class="bi bi-box-arrow-right me-2"></i> Logout
-        </button>
-    </form>
+    {{-- User & Logout --}}
+    <div class="border-top p-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-person-circle fs-4 text-secondary"></i>
+            <div>
+                <large class="text-dark d-block">{{ Auth::user()->name ?? 'Admin' }}</large>
+                <form method="POST" action="{{ route('logout') }}" class="m-0 p-0">
+                    @csrf
+                    <button type="submit" class="btn btn-sm btn-link text-danger p-0" style="font-size: 12px;">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
 </nav>

@@ -27,7 +27,7 @@ class BarangController extends Controller
             $query->where('nama_brg', 'like', '%' . $request->q . '%');
         }
 
-        $barangs = $query->get();
+        $barangs = $query->paginate(10)->withQueryString();
         $kategoris = Kategori::all();
 
         return view('barang.index', compact('barangs', 'kategoris'));
@@ -195,13 +195,16 @@ class BarangController extends Controller
 
         // Jika status berubah ke rusak/habis, log ke barang_keluar
         // Catat status lama sebelum update
-        $oldStatus = $unit->getOriginal('status');
- {
+       $oldStatus = $unit->getOriginal('status');
+
+        // Jika sebelumnya bukan rusak dan sekarang menjadi rusak
+        if ($oldStatus !== 'rusak' && $request->status === 'rusak') {
             BarangKeluar::create([
                 'barang_id' => $unit->barang_id,
                 'unit_barang_id' => $unit->id,
             ]);
         }
+
 
         return redirect()->route('barang.show', $barangId)->with('success', 'Unit barang berhasil diperbarui.');
     }

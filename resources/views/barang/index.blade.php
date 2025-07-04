@@ -1,6 +1,7 @@
 {{-- filepath: c:\xampp\htdocs\inventory\resources\views\barang\index.blade.php --}}
 @extends('layouts.app')
 
+@section('pageTitle', 'Daftar Barang')
 @section('content')
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -108,6 +109,9 @@
                 </table>
             </div>
         </div>
+        <div class="p-3">
+                {{ $barangs->links() }}
+            </div>
     </div>
 </div>
 @endsection

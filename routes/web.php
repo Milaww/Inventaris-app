@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\barangController;
 use App\Http\Controllers\barangMasukController;
 use App\Http\Controllers\dashboardController;
+use App\Http\Controllers\laporanController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,6 +44,15 @@ route::middleware(['auth'])->group(function () {
 
     //barang keluar
     route::get('/barang-keluar/index', [App\Http\Controllers\barangKeluarController::class, 'index'])->name('barang-keluar.index');
+
+    //laporan
+
+    // Route halaman laporan
+    Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+
+    // Route untuk mencetak
+    Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
+
 
 
 });

@@ -45,7 +45,7 @@ class unitBarang extends Model
 
         public function barangKeluars()
     {
-        return $this->hasMany(BarangKeluar::class);
+        return $this->hasMany(BarangKeluar::class, 'unit_barang_id');
     }
 
 

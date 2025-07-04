@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Tambah Unit Barang')
 @section('content')
 <div class="container mt-3">
     <h5 class="mb-3">

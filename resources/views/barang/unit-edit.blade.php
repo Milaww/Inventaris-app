@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Edit Unit Barang')
 @section('content')
 <div class="container mt-5">
     <h2 class="fw-bold text-primary mb-4">Edit Unit Barang</h2>

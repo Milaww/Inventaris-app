@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('pageTitle', 'Daftar Barang Keluar')
 @section('content')
 <div class="container mt-5">
     <h2 class="fw-bold text-danger mb-4">Daftar Barang Keluar</h2>

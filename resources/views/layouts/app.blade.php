@@ -31,15 +31,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="g-sidenav-show bg-gray-100">
+        <!-- Toggle Sidebar Button (muncul di mobile) -->
+    <button class="btn btn-light d-md-none position-fixed top-0 start-0 m-3" id="sidebarToggle" style="z-index: 1040;">
+        <i class="bi bi-list fs-4"></i>
+    </button>
+
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
-            <aside class="col-md-2 vh-100 position-fixed bg-white shadow-sm" id="sidenav-main" style="z-index: 1030;">
+            <aside class="col-md-2 vh-100 position-fixed bg-white shadow-sm d-md-block d-none" id="sidebar" style="z-index: 1030;">
                 @include('layouts.sidebar')
             </aside>
 
+
             <!-- Main Content -->
             <main class="col-md-10 offset-md-2 p-4">
+
                 @yield('content')
             </main>
         </div>
@@ -47,6 +54,17 @@
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const sidebar = document.getElementById('sidebar');
+            const toggleBtn = document.getElementById('sidebarToggle');
+
+            toggleBtn?.addEventListener('click', () => {
+                sidebar?.classList.toggle('d-none');
+            });
+        });
+    </script>
+
 </body>
 
 </html>
