@@ -60,7 +60,7 @@
                     <tbody>
                         @forelse($unitRusak as $index => $unit)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $unitRusak->FirstItem() + $index }}</td>
                             <td>{{ $unit->barang->nama_brg ?? '-' }}</td>
                             <td>{{ $unit->barang->kategori->nama_kategori ?? '-' }}</td>
                             <td>{{ $unit->kode_inventaris ?? '-' }}</td>
@@ -78,6 +78,9 @@
                     </tbody>
 
                 </table>
+            </div>
+            <div class="p-3">
+                {{ $unitRusak->links() }}
             </div>
         </div>
     </div>

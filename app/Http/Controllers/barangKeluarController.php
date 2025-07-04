@@ -29,7 +29,7 @@ class barangKeluarController extends Controller
         });
     }
 
-    $unitRusak = $query->get();
+    $unitRusak = $query->paginate(10)->withQueryString();
 
     return view('barang-keluar.index', [
         'unitRusak' => $unitRusak,

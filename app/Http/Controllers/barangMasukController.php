@@ -52,7 +52,7 @@ class BarangMasukController extends Controller
             });
         }
 
-        $barangMasuks = $query->get();
+        $barangMasuks = $query->paginate(10)->withQueryString();
 
         // Untuk dropdown lokasi dan status
         $daftarLokasi = \App\Models\Lokasi::all();

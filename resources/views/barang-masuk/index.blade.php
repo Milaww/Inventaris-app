@@ -80,7 +80,7 @@
                     <tbody>
                         @forelse($barangMasuks as $index => $masuk)
                             <tr>
-                                <td>{{ $index + 1 }}</td>
+                                <td>{{ $barangMasuks->firstItem() + $index }}</td>
                                 <td>{{ $masuk->barang->nama_brg ?? '-' }}</td>
                                 <td>{{ $masuk->barang->kategori->nama_kategori ?? '-' }}</td>
                                 <td>{{ $masuk->unitBarang->kode_inventaris ?? '-' }}</td>
@@ -99,6 +99,9 @@
                         @endforelse
                     </tbody>
                 </table>
+            </div>
+            <div class="p-3">
+                {{ $barangMasuks->links() }}
             </div>
         </div>
     </div>
