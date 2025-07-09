@@ -23,9 +23,20 @@ class laporanController extends Controller
             $lokasiId = $request->lokasi_id;
             $status = $request->status;
 
+            // === CETAK SEMUA DATA TANPA FILTER ===
+            if (!$tanggal && !$jenis && !$lokasiId && !$status) {
+                $data = [
+                    'masuk' => \App\Models\BarangMasuk::with(['barang.kategori', 'unitBarang.lokasi'])->get(),
+                    'keluar' => \App\Models\BarangKeluar::with(['barang.kategori', 'unitBarang.lokasi'])->get(),
+                ];
+                $tanggal = now()->format('Y-m-d'); // tanggal default
+                return Pdf::loadView('laporan.cetak-semua', compact('data', 'tanggal'))->stream("laporan-semua-{$tanggal}.pdf");
+            }
+
+            // === FILTER MASUK SAJA ===
             if ($jenis === 'masuk') {
                 $query = \App\Models\BarangMasuk::with(['barang.kategori', 'unitBarang.lokasi'])
-                    ->whereDate('created_at', $tanggal);
+                    ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal));
 
                 if ($lokasiId) {
                     $query->whereHas('unitBarang', fn($q) => $q->where('lokasi_id', $lokasiId));
@@ -39,9 +50,10 @@ class laporanController extends Controller
                 $view = 'laporan.cetak-masuk';
             }
 
+            // === FILTER KELUAR SAJA ===
             elseif ($jenis === 'keluar') {
                 $query = \App\Models\BarangKeluar::with(['barang.kategori', 'unitBarang.lokasi'])
-                    ->whereDate('created_at', $tanggal);
+                    ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal));
 
                 if ($lokasiId) {
                     $query->whereHas('unitBarang', fn($q) => $q->where('lokasi_id', $lokasiId));
@@ -55,12 +67,13 @@ class laporanController extends Controller
                 $view = 'laporan.cetak-keluar';
             }
 
-            else { // MUTASI
+            // === MUTASI MASUK & KELUAR ===
+            else {
                 $masukQuery = \App\Models\BarangMasuk::with(['barang.kategori', 'unitBarang.lokasi'])
-                    ->whereDate('created_at', $tanggal);
+                    ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal));
 
                 $keluarQuery = \App\Models\BarangKeluar::with(['barang.kategori', 'unitBarang.lokasi'])
-                    ->whereDate('created_at', $tanggal);
+                    ->when($tanggal, fn($q) => $q->whereDate('created_at', $tanggal));
 
                 if ($lokasiId) {
                     $masukQuery->whereHas('unitBarang', fn($q) => $q->where('lokasi_id', $lokasiId));
@@ -81,6 +94,7 @@ class laporanController extends Controller
 
             return Pdf::loadView($view, compact('data', 'tanggal'))->stream("laporan-{$jenis}-{$tanggal}.pdf");
         }
+
 
 
 

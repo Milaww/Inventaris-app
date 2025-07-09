@@ -6,6 +6,7 @@
     <h3 class="fw-semibold text-primary mb-4">Laporan Inventaris</h3>
 
     <div class="card shadow-sm border-0 rounded-4">
+        {{-- filter --}}
         <div class="card-body">
             <form method="GET" action="{{ route('laporan.cetak') }}" target="_blank" class="row g-3">
 
@@ -21,7 +22,6 @@
                     <select name="status" id="status" class="form-select rounded-3 shadow-sm">
                         <option value="">Semua Status</option>
                         <option value="tersedia">Tersedia</option>
-                        <option value="dipinjam">Dipinjam</option>
                         <option value="rusak">Rusak</option>
                     </select>
                 </div>
@@ -48,12 +48,20 @@
                     </select>
                 </div>
 
+
                 {{-- Tombol Cetak --}}
-                <div class="col-12 text-end mt-2">
+                <div class="col-12 d-grid gap-2 mt-2">
+                    
+
                     <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm">
                         <i class="bi bi-printer me-1"></i> Cetak Laporan
                     </button>
+                    <a href="{{ route('laporan.cetak') }}" target="_blank" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm">
+                        <i class="bi bi-printer-fill me-1"></i> Cetak Semua Data
+                    </a>
                 </div>
+
+
             </form>
         </div>
     </div>
