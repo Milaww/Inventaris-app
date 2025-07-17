@@ -38,12 +38,12 @@
 
                     <!-- Divisi -->
                     <div class="col-md-6">
-                        <label for="divisi_id" class="form-label">Divisi</label>
-                        <select name="divisi_id" id="divisi_id" class="form-select" required>
-                            <option value="" disabled selected>Pilih Divisi</option>
-                            @foreach($divisis as $divisi)
-                                <option value="{{ $divisi->id }}">
-                                    {{ $divisi->nama_divisi }} - ({{ $divisi->lokasi->nama_lokasi }})
+                        <label for="lokasi_id" class="form-label">Lokasi</label>
+                        <select name="lokasi_id" id="lokasi_id" class="form-select" required>
+                            <option value="" disabled selected>Pilih Lokasi</option>
+                            @foreach($lokasis as $lokasi)
+                                <option value="{{ $lokasi->id }}">
+                                    {{ $lokasi->nama_lokasi }}
                                 </option>
                             @endforeach
                         </select>

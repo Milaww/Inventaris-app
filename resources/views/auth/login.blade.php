@@ -116,10 +116,10 @@
                         </button>
                     </div>
 
-                    <div class="text-center mt-4">
+                    {{-- <div class="text-center mt-4">
                         <span class="text-muted">Belum punya akun?</span>
                         <a href="{{ route('register') }}">Daftar di sini</a>
-                    </div>
+                    </div> --}}
                 </form>
             </div>
         </div>

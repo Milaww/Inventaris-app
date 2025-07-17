@@ -5,6 +5,9 @@ use App\Http\Controllers\barangController;
 use App\Http\Controllers\barangMasukController;
 use App\Http\Controllers\dashboardController;
 use App\Http\Controllers\laporanController;
+use App\Http\Controllers\LokasiController;
+use App\Http\Controllers\UserController;
+use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,6 +55,17 @@ route::middleware(['auth'])->group(function () {
 
     // Route untuk mencetak
     Route::get('/laporan/cetak', [LaporanController::class, 'cetak'])->name('laporan.cetak');
+
+    //route user management
+    Route::middleware(['auth', IsAdmin::class])->group(function () {
+        Route::resource('users', UserController::class);
+    });
+
+    //route lokasi
+    Route::middleware(['auth', IsAdmin::class])->group(function () {
+        Route::resource('lokasi', LokasiController::class);
+    });
+    
 
 
 

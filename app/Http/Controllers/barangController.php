@@ -38,8 +38,8 @@ class BarangController extends Controller
     public function create()
     {
         $kategoris = Kategori::all();
-        $divisis = Divisi::with('lokasi')->get();
-        return view('barang.create', compact('kategoris', 'divisis'));
+        $lokasis = lokasi::all();
+        return view('barang.create', compact('kategoris', 'lokasis'));
     }
 
     // Simpan barang baru + unit
@@ -49,7 +49,7 @@ class BarangController extends Controller
             'nama_brg' => 'required|string|max:255',
             'kategori_id' => 'required|exists:kategoris,id',
             'kode_inventaris' => 'required|string|max:255',
-            'divisi_id' => 'required|exists:divisis,id',
+            'lokasis_id' => 'required|exists:lokasis,id',
             'pic' => 'nullable|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:aktif,rusak',
@@ -62,13 +62,12 @@ class BarangController extends Controller
         ]);
 
         // Ambil lokasi_id dari divisi yang dipilih
-        $divisi = Divisi::findOrFail($request->divisi_id);
+        $lokasis= lokasi::findOrFail($request->lokasis_id);
 
         // Simpan unit barang
         $unit = $barang->unitBarangs()->create([
             'kode_inventaris' => $request->kode_inventaris,
-            'divisi_id' => $request->divisi_id,
-            'lokasi_id' => $divisi->lokasi_id,
+            'lokasi_id' => $request->lokasi_id,
             'pic' => $request->pic,
             'foto' => $request->file('foto') ? $request->file('foto')->store('unit_barang', 'public') : null,
             'status' => $request->status,
@@ -86,7 +85,7 @@ class BarangController extends Controller
     // Tampilkan detail barang
     public function show($id)
     {
-        $barang = Barang::with(['kategori', 'unitBarangs.lokasi', 'unitBarangs.divisi'])->findOrFail($id);
+        $barang = Barang::with(['kategori', 'unitBarangs.lokasi'])->findOrFail($id);
         return view('barang.show', compact('barang'));
     }
 
@@ -121,9 +120,9 @@ class BarangController extends Controller
     public function createUnit()
     {
         $barangs = Barang::with('kategori')->get();
-        $divisis = Divisi::with('lokasi')->get();
+        $lokasis = lokasi::all();
 
-        return view('barang.tambahUnit', compact('barangs', 'divisis'));
+        return view('barang.tambahUnit', compact('barangs', 'lokasis'));
     }
 
 
@@ -133,20 +132,19 @@ class BarangController extends Controller
         $request->validate([
             'barang_id' => 'required|exists:barangs,id',
             'kode_inventaris' => 'required|string|max:255|unique:unit_barang,kode_inventaris',
-            'divisi_id' => 'required|exists:divisis,id',
+            'lokasi_id' => 'required|exists:lokasis,id',
             'pic' => 'nullable|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'status' => 'required|in:aktif,rusak',
         ]);
 
-        $divisi = Divisi::findOrFail($request->divisi_id);
+        $lokasi = lokasi::findOrFail($request->lokasi_id);
 
         // Simpan unit barang
         $unit = UnitBarang::create([
             'barang_id' => $request->barang_id,
             'kode_inventaris' => $request->kode_inventaris,
-            'divisi_id' => $request->divisi_id,
-            'lokasi_id' => $divisi->lokasi_id,
+            'lokasi_id' => $request->lokasi_id,
             'pic' => $request->pic,
             'foto' => $request->file('foto') ? $request->file('foto')->store('unit_barang', 'public') : null,
             'status' => $request->status,
@@ -167,9 +165,9 @@ class BarangController extends Controller
     {
         $barang = Barang::findOrFail($barangId);
         $unit = UnitBarang::where('id', $unitId)->where('barang_id', $barangId)->firstOrFail();
-        $divisis = Divisi::with('lokasi')->get();
+        $lokasis = lokasi::all();
 
-        return view('barang.unit-edit', compact('barang', 'unit', 'divisis'));
+        return view('barang.unit-edit', compact('barang', 'unit', 'lokasis'));
     }
 
     //form update unit barang
@@ -178,7 +176,7 @@ class BarangController extends Controller
         $request->validate([
             'kode_inventaris' => 'required|string|max:255',
             'status' => 'required|in:aktif,rusak',
-            'divisi_id' => 'required|exists:divisis,id',
+            'lokasi_id' => 'required|exists:lokasis,id',
             'pic' => 'nullable|string|max:255',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -188,7 +186,7 @@ class BarangController extends Controller
         $unit->update([
             'kode_inventaris' => $request->kode_inventaris,
             'status' => $request->status,
-            'divisi_id' => $request->divisi_id,
+            'lokasi_id' => $request->lokasi_id,
             'pic' => $request->pic,
             'foto' => $request->file('foto') ? $request->file('foto')->store('unit_barang', 'public') : $unit->foto,
         ]);
